@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import static ru.horologer.base.DateFormats.DD_MM_YYYY_FORMAT;
+import static ru.horologer.base.DateFormats.DD_MM_YYYY_HH_MM_SS_FORMAT;
 import static ru.horologer.core.AppConfiguration.getLogger;
 
 /**
@@ -54,29 +56,28 @@ public interface StringConverter {
         throw new RuntimeException("Unknown type to parse: " + o.getClass());
     }
 
+    /**
+     * There some troubles if you want to parse value in integer diapason into long
+     * @param str string value to parse
+     * @return Object with needed type
+     */
     static Object toObject(String str) {
         if (str == null) return null;
-        /**
-         * Integer
-         * Long
-         * Date
-         * Boolean
-         * String - default
-         * */
-        //-2147483648 to 2147483647
-        // Если содержит цифры и точку - double, если содержит цифры - int или long (от max int)
-        // если что-то кроме String, кроме вариантов с Date (типы DatePattern надо определить)
+
         if(str.matches("\\d+") || str.matches("-\\d+")) {
             long vCandidate;
             if ((vCandidate = Long.parseLong(str)) <= 2147483647L && vCandidate >= -2147483648)
                 return (int) vCandidate;
             return vCandidate;
         }
+        if(str.matches("\\d+.\\d+") || str.matches("-\\d+.\\d+")) {
+            return Double.parseDouble(str);
+        }
         if(str.matches("\\d{2}.\\d{2}.\\d{4}"))
-            return toDate(str, "dd.MM.yyyy");
+            return toDate(str, DD_MM_YYYY_FORMAT);
         if(str.matches("\\d{2}.\\d{2}.\\d{4}\\s\\d{2}:\\d{2}:\\d{2}"))
-            return toDate(str, "dd.MM.yyyy hh:mm:ss");
-//        if(str.matches("d*")) return toDate(str);//TODO insert datePattern
+            return toDate(str, DD_MM_YYYY_HH_MM_SS_FORMAT);
+
         if(str.equalsIgnoreCase("true")) return true;
         if(str.equalsIgnoreCase("false")) return false;
         return str;

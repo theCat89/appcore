@@ -4,6 +4,7 @@ import java.util.List;
 
 public class CommonRepoResponse {
     private List<FlatValueRecord> records;
+    private FlatValueRecord record;
     private int count;
 
     public List<FlatValueRecord> getRecords() {
@@ -21,6 +22,15 @@ public class CommonRepoResponse {
 
     public CommonRepoResponse setCount(int count) {
         this.count = count;
+        return this;
+    }
+
+    public FlatValueRecord getRecord() {
+        return record;
+    }
+
+    public CommonRepoResponse setRecord(FlatValueRecord record) {
+        this.record = record;
         return this;
     }
 }

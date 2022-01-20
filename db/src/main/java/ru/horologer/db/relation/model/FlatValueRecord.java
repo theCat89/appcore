@@ -35,9 +35,19 @@ public class FlatValueRecord {
         for (FlatValue flatValue : fieldList) {
             if (flatValue.getName().equals(name)) {
                 flatValue.setValue(value);
-                break;
+                return;
             }
         }
+    }
+
+    public void addValueByName(String name, String value) {
+        for (FlatValue flatValue : fieldList) {
+            if (flatValue.getName().equals(name)) {
+                flatValue.setValue(value);
+                return;
+            }
+        }
+        fieldList.add( new FlatValue().setName(name).setValue(value));
     }
 
     public void deleteByName(String name) {

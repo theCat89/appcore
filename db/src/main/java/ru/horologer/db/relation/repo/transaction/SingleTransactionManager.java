@@ -30,7 +30,7 @@ public class SingleTransactionManager {
                    results.add(request.getFunction().apply(new InnerRepoRequest()
                            .setConn(connection)
                            .setRequest(request.getRequest())));
-               } catch (BreakTransactionException e){
+               } catch (RuntimeException e){
                    getLogger().log(e);
                    connection.rollback();
                    break;
